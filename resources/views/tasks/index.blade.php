@@ -1,25 +1,20 @@
-@extends('layouts.master')
-
-@section('title', 'Tasks')
-
-@section('sidebar')
-    @parent
-
-    <p>This is appended to the master sidebar.</p>
-@endsection
+@extends('layouts.app')
 
 @section('content')
+
     <!-- Bootstrap Boilerplate... -->
 
     <div class="panel-body">
+        <!-- Display Validation Errors -->
+        @include('common.errors')
+
         <!-- New Task Form -->
         <form action="{{ url('task') }}" method="POST" class="form-horizontal">
             {{ csrf_field() }}
-            <!-- Display Validation Errors -->
-            @include('errors.errors')
+
             <!-- Task Name -->
             <div class="form-group">
-                <label for="task" class="col-sm-3 control-label">Task</label>
+                <label for="task-name" class="col-sm-3 control-label">Task</label>
 
                 <div class="col-sm-6">
                     <input type="text" name="name" id="task-name" class="form-control">
@@ -35,8 +30,10 @@
                 </div>
             </div>
         </form>
+    </div>
 
-    <!-- Current Tasks -->
+    <!-- TODO: Current Tasks -->
+
     @if (count($tasks) > 0)
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -61,14 +58,14 @@
                                     <div>{{ $task->name }}</div>
                                 </td>
 
-                                <!-- Delete Button -->
                                 <td>
+                                    <!-- TODO: Delete Button -->
                                     <form action="{{ url('task/'.$task->id) }}" method="POST">
                                         {{ csrf_field() }}
                                         {{ method_field('DELETE') }}
 
-                                        <button type="submit" class="btn btn-danger">
-                                            <i class="fa fa-trash"></i> Delete
+                                        <button type="submit" id="delete-task-{{ $task->id }}" class="btn btn-danger">
+                                            <i class="fa fa-btn fa-trash"></i>Delete
                                         </button>
                                     </form>
                                 </td>
@@ -79,6 +76,5 @@
             </div>
         </div>
     @endif
-
 
 @endsection
